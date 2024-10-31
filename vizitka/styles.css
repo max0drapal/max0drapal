@@ -1,0 +1,87 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #007497;
+}
+
+.card-container {
+  width: 400px;
+  perspective: 1000px; 
+}
+
+.card {
+  width: 100%;
+  height: 250px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s; 
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-front {
+  display: flex;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.card-left, .card-right {
+  width: 50%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.card-left {
+  background-color: #79ebff;
+  border-right: 1px solid #79ebff;
+  text-align: center;
+}
+
+.card-right {
+  background-color: #79ebff;
+  text-align: left;
+  align-items: flex-start;
+  padding-left: 20px;
+}
+
+.card-right p {
+  margin: 5px 0; 
+}
+
+.card-back {
+  transform: rotateY(180deg); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #79ebff;
+}
+
+.profile-image {
+  width: 80%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.back-image {
+  width: 80%; 
+  height: auto;
+  border-radius: 10px;
+}
+
+.card-container:hover .card {
+  transform: rotateY(180deg); 
+}
