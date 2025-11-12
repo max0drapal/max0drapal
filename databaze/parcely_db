@@ -1,0 +1,51 @@
+-- Vytvoření databáze
+CREATE DATABASE parcely_db;
+USE parcely_db;
+
+-- Vytvoření tabulek
+CREATE TABLE owners (
+    owner_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100)
+);
+
+CREATE TABLE plots (
+    plot_id INT AUTO_INCREMENT PRIMARY KEY,
+    owner_id INT NOT NULL,
+    area DECIMAL(10,2) NOT NULL,
+    kind ENUM('stavebni','zpf','mixed') NOT NULL,
+    note VARCHAR(255),
+    FOREIGN KEY (owner_id) REFERENCES owners(owner_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+-- Vložení ukázkových dat
+INSERT INTO owners (name, email)
+VALUES 
+('Jan Novák', 'jan.novak@example.com'),
+('Petra Svobodová', 'petra.svobodova@example.com');
+
+INSERT INTO plots (owner_id, area, kind, note)
+VALUES
+(1, 500.25, 'stavebni', 'Pozemek u lesa'),
+(1, 750.00, 'mixed', 'Stavba + zahrada'),
+(2, 1000.50, 'zpf', 'Pole u řeky');
+
+-- Vytvoření role s oprávněními
+CREATE ROLE parcel_editor;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON parcely_db.* TO parcel_editor;
+
+-- Vytvoření uživatele a přiřazení role
+CREATE USER 'uzivatel_parcely'@'localhost' IDENTIFIED BY 'Heslo123!';
+GRANT parcel_editor TO 'uzivatel_parcely'@'localhost';
+
+-- (volitelně) Aktivace role při přihlášení
+SET DEFAULT ROLE parcel_editor TO 'uzivatel_parcely'@'localhost';
+
+--  Ověření oprávnění (přihlásit se jako nový uživatel a zkusit:)
+-- SELECT * FROM owners;
+-- INSERT INTO owners (name, email) VALUES ('Testovací uživatel', 'test@test.cz');
+-- UPDATE plots SET note = 'Opraveno' WHERE plot_id = 1;
+-- DELETE FROM plots WHERE plot_id = 3;
